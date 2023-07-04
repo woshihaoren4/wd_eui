@@ -1,7 +1,7 @@
 // #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")] // hide console window on Windows in release
 
 use eframe::egui;
-use eframe::egui::RichText;
+use eframe::egui::{Color32, RichText};
 
 fn main() -> Result<(), eframe::Error> {
 
@@ -13,19 +13,35 @@ fn main() -> Result<(), eframe::Error> {
     // Our application state:
     let mut name = "Arthur".to_owned();
     let mut age = 42;
+    let mut page  = 1;
 
     eframe::run_simple_native("My egui App", options, move |ctx, _frame| {
         egui::CentralPanel::default().show(ctx, |ui| {
             ui.heading("My egui Application");
+            ui.separator();
             ui.horizontal(|ui| {
-                if ui.button(RichText::new("chang")).clicked() {
-                    println!("唱");
+                let mut rt = RichText::new("chang");
+                if page == 1 {
+                    rt = rt.color(Color32::WHITE).background_color(Color32::BLUE);
                 }
-                if ui.button(RichText::new("tiao")).clicked() {
-                    println!("跳");
+                if ui.button(rt).clicked() {
+                    page = 1;
                 }
-                if ui.button(RichText::new("rap")).clicked() {
-                    println!("rap");
+                ui.separator();
+                let mut rt = RichText::new("tiao");
+                if page == 2 {
+                    rt = rt.color(Color32::WHITE).background_color(Color32::BLUE);
+                }
+                if ui.button(rt).clicked() {
+                    page = 2;
+                }
+                ui.separator();
+                let mut rt = RichText::new("rap");
+                if page == 3 {
+                    rt = rt.color(Color32::WHITE).background_color(Color32::BLUE);
+                }
+                if ui.button(rt).clicked() {
+                    page = 3;
                 }
                 //
                 // let name_label = ui.label("Your name: ");
