@@ -1,5 +1,12 @@
+mod font;
+mod config;
+mod about;
+mod tools;
+mod control;
+
 use eframe::{CreationContext, egui, Frame};
 use eframe::egui::{Color32, Context, Ui, Widget, WidgetText};
+use crate::infra::HttpClient;
 
 pub trait Tap{
     fn name(&self)-> &'static str;
@@ -20,17 +27,21 @@ impl Tap for TapIndex {
     }
 }
 
-#[derive(Default)]
 pub struct App{
     tap:Vec<Box<dyn Tap>>,
-    tap_index: usize
+    tap_index: usize,
+    hc:HttpClient,
 }
 
 impl App {
-    pub fn new(cc:&CreationContext)->Self{
-        App::default()
-            .add_tag(TapIndex{name:"one"})
-            .add_tag(TapIndex{name:"two"})
+    pub fn new(cc:&CreationContext,hc:HttpClient)->Self{
+        App::setup_custom_fonts(&cc.egui_ctx);
+        let tap = vec![];
+        let tap_index = 0;
+        App{tap,tap_index,hc:hc.clone()}
+            .add_tag(about::About::default())
+            .add_tag(config::Config::default())
+            .add_tag(control::Control::new(hc))
     }
     fn add_tag<T:Tap + 'static>(mut self,tag:T)->App{
         self.tap.push(Box::new(tag));self
