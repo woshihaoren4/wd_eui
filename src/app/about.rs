@@ -17,7 +17,7 @@ impl Default for About {
     }
 }
 
-impl super::Tap for About{
+impl super::Tab for About{
     fn name(&self) -> &'static str {
         "ABOUT"
     }
