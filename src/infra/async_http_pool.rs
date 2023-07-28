@@ -141,6 +141,11 @@ impl HttpHandleBuilder for Body{
         hh.body = Some(self);
     }
 }
+impl HttpHandleBuilder for Vec<u8>{
+    fn build(self, hh: &mut HttpHandle) {
+        hh.body = Some(Body::from(self));
+    }
+}
 impl<T> HttpHandleBuilder for T
 where T:FnOnce(anyhow::Result<(StatusCode,HeaderMap,Vec<u8>)>)+ Send+Sync+'static
 {

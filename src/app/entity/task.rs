@@ -1,4 +1,5 @@
 use serde::{Serialize, Deserialize};
+use super::CoordinateResponse;
 
 #[derive(Debug, Clone,Serialize,Deserialize, Default)]
 pub struct TaskEntity {
@@ -28,3 +29,26 @@ pub struct SearchTasksResponse {
     pub code: i32,
     pub message: String,
 }
+coordinate_response_generate!(SearchTasksResponse,Vec<TaskEntity>,tasks);
+
+#[derive(Debug, Clone,Serialize,Deserialize, Default)]
+pub struct Strategy {
+    pub dead_timeout_sec: i32,
+}
+
+#[derive(Debug, Clone,Serialize,Deserialize, Default)]
+pub struct CreateTaskRequest {
+    pub name: String,
+    pub strategy: Option<Strategy>,
+    pub slot: Option<TaskSlot>,
+}
+
+#[derive(Debug, Clone,Serialize,Deserialize, Default)]
+pub struct CreateTaskResponse {
+    #[serde(default)]
+    pub id: String,
+    #[serde(default)]
+    pub code: i32,
+    pub message: String,
+}
+coordinate_response_generate!(CreateTaskResponse,String,id);

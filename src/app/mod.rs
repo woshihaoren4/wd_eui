@@ -2,8 +2,9 @@ mod font;
 mod config;
 mod about;
 mod tools;
-mod control;
+mod task_tab;
 mod entity;
+mod node_tab;
 
 use std::sync::Arc;
 use eframe::{CreationContext, egui, Frame};
@@ -36,6 +37,7 @@ pub struct App{
     tap:Vec<Box<dyn Tab>>,
     tap_index: usize,
     hc:HttpClient,
+    ctx:Option<Context>
 }
 
 impl App {
@@ -46,11 +48,13 @@ impl App {
         let cfg = Arc::new(CopyLock::new(ConfigEntity::default()));
 
         let coordinate = Coordinate::new(hc.clone(),cfg.clone());
+        let tasks = Arc::new(CopyLock::new(Vec::new()));
 
-        App{tap,tap_index,hc:hc.clone()}
+        App{tap,tap_index,hc:hc.clone(),ctx:None}
             .add_tag(about::About::default())
             .add_tag(config::ConfigTab::new(cfg.clone()))
-            .add_tag(control::Control::new(coordinate,cfg))
+            .add_tag(task_tab::TaskTab::new(coordinate, cfg.clone(),tasks.clone()))
+            .add_tag(node_tab::NodeTab::new(cfg,tasks))
     }
     fn add_tag<T: Tab + 'static>(mut self, tag:T) ->App{
         self.tap.push(Box::new(tag));self
@@ -59,6 +63,9 @@ impl App {
 
 impl eframe::App for App {
     fn update(&mut self, ctx: &Context, _frame: &mut Frame) {
+        if self.ctx.is_none(){
+            self.ctx = Some(ctx.clone())
+        }
         egui::CentralPanel::default().show(ctx,|ui|{
             //显示第一排tap
             ui.horizontal(|ui|{

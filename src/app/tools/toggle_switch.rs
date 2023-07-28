@@ -36,7 +36,7 @@ pub fn toggle_ui(ui: &mut egui::Ui, on: &mut bool) -> egui::Response {
     // 3. Interact: Time to check for clicks!
     if response.clicked() {
         *on = !*on;
-        response.mark_changed(); // report back that the value changed
+        response.mark_changed(); // report back that the Value changed
     }
 
     // Attach some meta-data to the response which can be used by screen readers:
@@ -47,7 +47,7 @@ pub fn toggle_ui(ui: &mut egui::Ui, on: &mut bool) -> egui::Response {
     if ui.is_rect_visible(rect) {
         // Let's ask for a simple animation from egui.
         // egui keeps track of changes in the boolean associated with the id and
-        // returns an animated value in the 0-1 range for how much "on" we are.
+        // returns an animated Value in the 0-1 range for how much "on" we are.
         let how_on = ui.ctx().animate_bool(response.id, *on);
         // We will follow the current style by asking
         // "how should something that is being interacted with be painted?".

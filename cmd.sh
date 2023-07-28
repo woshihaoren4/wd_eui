@@ -35,16 +35,22 @@ docker run -d --name coordinate  --net test_coordinate_net -v $(pwd)/config.toml
 echo "start run rust-grpc-proxy proxy"
 docker run -d --name rust-grpc-proxy --net test_coordinate_net -v $(pwd)/config.toml:/root/config.toml -p 6789:6789  wdshihaoren/rust-grpc-proxy:v0.0.6-s ./rust-grpc-proxy run -c ./config.toml
 
-echo "run test..."
-curl --location --request GET 'http://127.0.0.1:6789/api/v1/task/search'
-
 echo "
-======> over"
+======> server start over
+run cmd test ->./cmd.sh test"
+}
+
+function test() {
+    echo "run test..."
+    curl --location --request GET 'http://127.0.0.1:6789/api/v1/task/search'
 }
 
 case $1 in
 start)
   start_server $*
+  ;;
+test)
+  test
   ;;
 clean)
   echo "stop coordinate container..."
