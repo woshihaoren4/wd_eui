@@ -4,6 +4,8 @@ function help() {
   echo "coordinate使用etcd作为后端存储，请提前部署一个etcd集群，并将其中一个节点链接作为第二个入参，以便测试"
   echo "start run test server : ./cmd.sh start [ETCD_URL EX:http://127.0.0.1:2379]"
   echo "clean about:            ./cmd.sh clean"
+  echo "test server:            ./cmd.sh test"
+  echo "build desktop app:      ./cmd.sh build"
 }
 function start_server() {
   if [ $# -lt 2 ]; then
@@ -51,6 +53,11 @@ start)
   ;;
 test)
   test
+  ;;
+build)
+sudo cargo build --release
+cp ./target/release/wd_eui ./
+
   ;;
 clean)
   echo "stop coordinate container..."

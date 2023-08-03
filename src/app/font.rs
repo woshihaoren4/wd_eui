@@ -1,6 +1,6 @@
 use eframe::egui;
 
-impl super::App{
+impl super::App {
     pub fn setup_custom_fonts(ctx: &egui::Context) {
         // Start with the default fonts (we will be adding to them rather than replacing them).
         let mut fonts = egui::FontDefinitions::default();
@@ -9,9 +9,7 @@ impl super::App{
         // .ttf and .otf files supported.
         fonts.font_data.insert(
             "my_font".to_owned(),
-            egui::FontData::from_static(include_bytes!(
-                "../../aashigemingxinpian.ttf"
-            )),
+            egui::FontData::from_static(include_bytes!("../../aashigemingxinpian.ttf")),
         );
 
         // Put my font first (highest priority) for proportional text:
@@ -32,4 +30,3 @@ impl super::App{
         ctx.set_fonts(fonts);
     }
 }
-
