@@ -156,6 +156,7 @@ impl super::Tab for NodeTab {
                                 info.update(|_| "update node tag success".to_string());
                             }
                             Err(err) => {
+                                tags.update(|_| Vec::new());
                                 info.update(move |_| format!("update error:{}", err));
                             }
                         },
